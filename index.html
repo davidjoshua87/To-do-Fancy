@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>to-do</title>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js" integrity="sha384-SlE991lGASHoBfWbelyBPLsUlwY1GwNDJo3jSJO04KZ33K2bwfV9YBauFfnzvynJ" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css">
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+
+<body>
+  <div id="app">
+    <div class="login-page" v-if="userData.token === null" v-cloak>
+      <header class="animated fadeInDown">
+        <h1 class="title">to-do</h1>
+      </header>
+
+      <div class="content">
+        <login-panel :userlogin="userLogin" @login="login" @defaultpanel="toggleLoginState('default')" :class="{hide: !(loginState === 'login')}"></login-panel>
+        <signup-panel :usersignup="userCreate" @signup="signup" @defaultpanel="toggleLoginState('default')" :class="{hide: !(loginState === 'signup')}"></signup-panel>
+        <default-panel @loginfb="loginfb" @signuppanel="toggleLoginState('signup')" @loginpanel="toggleLoginState('login')" :class="{hide: !(loginState === 'default')}"></default-panel>
+      </div><br>
+    </div>
+
+    <div class="inner-page" v-if="userData.token!==null" v-cloak>
+      <navbar :userdata="userData"></navbar>
+      
+      <weather-bar :weather="weather"></weather-bar>
+      <header class="header">
+        <h1 class="animated fadeInDown">Willkommen, {{firstName}}</h1>
+      </header>
+      <div class="todoapp animated zoomIn">
+        <input class="new-todo" autofocus placeholder="do something!" v-model="newTodo" @keyup.enter="addTodo()">
+        <div class="main">
+          <ul class="todo-list">
+            <li class="todo animated fadeInDown" v-for="todo in filteredTodos" onloadeddata="" :class="{ completed: todo.status, editing: todo == editedTodo }">
+              <div class="view">
+                <input @change="statusToggle(todo)" class="toggle " type="checkbox" v-model="todo.status">
+                <label @dblclick="editTodo(todo)">{{todo.text}}</label>
+                <button class="destroy" @click="deleteTodo(todo)"></button>
+              </div>
+              <input type="text" class="edit" v-model="todo.text" v-focus="todo == editedTodo" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)">
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer animated fadeInUp" v-show="todos.length">
+        <ul class="filters">
+          <li><a :class="{selected: visibility == 'all'}" @click="selectCategory('all')">All</a></li>
+          <li><a :class="{selected: visibility == 'active'}" @click="selectCategory('active')">Pending</a></li>
+          <li><a :class="{selected: visibility == 'completed'}" @click="selectCategory('completed')">Completed</a></li>
+        </ul>
+      </div>
+
+      <div class="subfooter animated fadeInUp" v-show="todos.length">
+        <ul class="actions">
+          <li><a v-show="uncompletedTodo" @click="completeAll()">Complete All</a></li>
+          <li><a @click="deleteAll()">Delete All</a></li>
+          <li><a v-show="checkCompleted" @click="clearComplete()">Clear Complete</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.15/dist/vue.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="/assets/components/default.panel.js" charset="utf-8"></script>
+  <script src="/assets/components/login.panel.js" charset="utf-8"></script>
+  <script src="/assets/components/signup.panel.js" charset="utf-8"></script>
+  <script src="/assets/components/navbar.js" charset="utf-8"></script>
+  <script src="/assets/components/weather.js"></script>
+  <script src="/assets/js/facebook.js" charset="utf-8"></script>
+  <script src="/assets/js/script.js" charset="utf-8"></script>
+</body>
+
+</html>
