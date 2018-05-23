@@ -47,7 +47,7 @@ window.onload = function () {
             }
           })
           .then(response => {
-            // console.log(`Response Login : ${JSON.stringify(response)}`);
+            console.log(`Response Login : ${JSON.stringify(response)}`);
             localStorage.setItem('token', response.data.data.token);
             localStorage.setItem('id', response.data.data.id);
             localStorage.setItem('name', response.data.data.name);
@@ -78,7 +78,7 @@ window.onload = function () {
             }
           })
           .then(response => {
-            // console.log(`Response Signup : ${JSON.stringify(response)}`);
+            console.log(`Response Signup : ${JSON.stringify(response)}`);
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('name', response.data.name);
             localStorage.setItem('id', response.data.id);

@@ -4,9 +4,9 @@ function statusChangeCallback(response) {
   if(response.status === 'connected') {
     console.log("send to server")
     console.log(`Auth Token: ${response.authResponse.accessToken}`)
-    axios({
+    $axios({
         method: 'post',
-        url: 'https://mysterious-tundra-15681.herokuapp.com/api/users/signinfb',
+        url: '/users/signinfb',
         headers: {
           token_fb: response.authResponse.accessToken
         }
@@ -39,7 +39,6 @@ function logout() {
     if(response.status === 'connected') {
       FB.logout(function (response) {
         console.log('logout facebook')
-        console.log(response)
       })
     }
   })
@@ -56,7 +55,7 @@ function loginfb() {
       console.log('ini auth response')
       console.log(response.authResponse)
       console.log('Welcome! Fecthing you information..')
-      $http({
+      $axios({
           method: 'post',
           url: '/users/signinfb',
           headers: {
